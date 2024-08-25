@@ -1,4 +1,4 @@
-#include "Lexer.cc"
+#include "lexer.cc"
 #include <iostream>
 #include <vector>
 using namespace std;
