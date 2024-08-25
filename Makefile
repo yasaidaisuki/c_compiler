@@ -1,33 +1,18 @@
-# Universal makefile for single C++ program
-#
-# Use gcc flag -MMD (user) or -MD (user/system) to generate dependencies among source files.
-# Use make default rules for commonly used file-name suffixes and make variables names.
-#
-# % make [ a.out ]
+CXX = g++
+CXXFLAGS = -std=c++11 -Wall
+LDFLAGS =
 
-########## Variables ##########
+SRC = main.cpp Token.cc lexer.cc
+OBJ = $(SRC:.cpp=.o)
+TARGET = my_program
 
-CXX = g++-11					# compiler
-CXXFLAGS = -std=c++20 -g -Wall -MMD			# compiler flags
-MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}	# makefile name
+all: $(TARGET)
 
-SOURCES = $(wildcard *.cc)			# source files (*.cc)
-OBJECTS = ${SOURCES:.cc=.o}			# object files forming executable
-DEPENDS = ${OBJECTS:.o=.d}			# substitute ".o" with ".d"
-EXEC = a.out					# executable name
+$(TARGET): $(OBJ)
+	$(CXX) $(LDFLAGS) -o $@ $^
 
-########## Targets ##########
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-.PHONY : clean					# not file names
-
-${EXEC} : ${OBJECTS}				# link step
-	${CXX} ${CXXFLAGS} $^ -o $@		# additional object files before $^
-
-${OBJECTS} : ${MAKEFILE_NAME}			# OPTIONAL : changes to this file => recompile
-
-# make implicitly generates rules to compile C++ files that generate .o files
-
--include ${DEPENDS}				# include *.d files containing program dependences
-
-clean :						# remove files that can be regenerated
-	rm -f ${DEPENDS} ${OBJECTS} ${EXEC}
+clean:
+	rm -f $(OBJ) $(TARGET)

@@ -15,16 +15,15 @@ class Expression : public ASTNode {
 
 class Constant : public Expression {
     int value;
-
 public:
     Constant(int value) : value(value) {}
-
     void print() const override {
         std::cout << "Constant value: " << value << std::endl;
     }
 };
 
 class Statement :public ASTNode {
+    public:
 };
 
 class Return : public Statement {
@@ -35,6 +34,9 @@ class Return : public Statement {
             std::cout << "return "<< std::endl;
             exp->print();
         }
+        ~Return() {
+            delete exp;
+        }
 };
 
 class Function : public ASTNode {
@@ -43,9 +45,12 @@ class Function : public ASTNode {
     public: 
         Function(std::string name, Statement* s): fn_name{name}, statement{s} {}
         void print() const override {
-        std::cout << "Function name: " << fn_name << std::endl;
-        statement->print();
-    }
+            std::cout << "Function name: " << fn_name << std::endl;
+            statement->print();
+        }
+        ~Function() {
+            delete statement;
+        }
 };
 
 class Program : public ASTNode {
@@ -55,5 +60,8 @@ class Program : public ASTNode {
         void print() const override {
             std::cout << "Program" << std::endl;
             function->print();
+        }
+        ~Program() {
+            delete function;
         }
 };

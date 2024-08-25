@@ -1,3 +1,6 @@
+#ifndef TOKEN
+#define TOKEN
+
 #include <string>
 #include "TokenType.h"
 
@@ -8,3 +11,5 @@ class Token {
 
       Token(TokenType type, std::string value) : type{type}, value{value} {}
 };
+
+#endif
