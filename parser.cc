@@ -5,8 +5,11 @@
 #include "tree.h"
 #include <sstream>
 
-ASTNode* parseExp(std::list<Token> &tokens) {
-    if (tokens.empty() || tokens.front().type != TokenType::Intlit ) return nullptr;
+Node* parseExp(std::list<Token> &tokens) {
+    if (tokens.empty() || tokens.front().type != TokenType::Intlit ) {
+        std::cerr << "Missing return expression" << std::endl;
+        return nullptr;
+    }
     std::stringstream iss{tokens.front().value};
     int i;
     iss >> i;
@@ -15,59 +18,83 @@ ASTNode* parseExp(std::list<Token> &tokens) {
     return new Constant{i};
 }   
 
-ASTNode* parseStatement(std::list<Token> &tokens) {
-    if (tokens.empty() || tokens.front().type != TokenType::Return) return nullptr;
+Node* parseStatement(std::list<Token> &tokens) {
+    if (tokens.empty() || tokens.front().type != TokenType::Return) {
+        std::cerr << "Error, return missing" << std::endl;
+        return nullptr;
+    }
 
     tokens.pop_front(); // Consume the return keyword
 
-    ASTNode* exp = parseExp(tokens);
+    Node* exp = parseExp(tokens);
     if (exp == nullptr) return nullptr;
 
-    if (tokens.empty() || tokens.front().type != TokenType::Semicolon) return nullptr;
+    if (tokens.empty() || tokens.front().type != TokenType::Semicolon) {
+        std::cerr << "Missing ;" << std::endl;
+        return nullptr;
+    }
 
     tokens.pop_front(); // Consume the semicolon
 
-    return new Return{dynamic_cast<Expression*>(exp)};
+    return new Return{exp};
 }
 
-ASTNode* parseFunction(std::list<Token> &tokens) {
+Node* parseFunction(std::list<Token> &tokens) {
     // int
-    if (tokens.empty() || tokens.front().type != TokenType::KeywordInt) return nullptr;
+    if (tokens.empty() || tokens.front().type != TokenType::KeywordInt) {
+        std::cerr << "Missing int keyword" << std::endl;
+        return nullptr;
+    }
     tokens.pop_front();
     
     // main
-    if (tokens.empty() || tokens.front().type != TokenType::Identifier) return nullptr;
+    if (tokens.empty() || tokens.front().type != TokenType::Identifier) {
+        std::cerr << "Missing main keyword" << std::endl;
+        return nullptr;
+    }
     Token token_id = tokens.front();
     tokens.pop_front();
 
     // ( 
-    if (tokens.empty() || tokens.front().type != TokenType::OpenParenthesis) return nullptr;
+    if (tokens.empty() || tokens.front().type != TokenType::OpenParenthesis) {
+        std::cerr << "Missing ( after main" << std::endl;
+        return nullptr;
+    }
 
 
     tokens.pop_front();
 
     if (tokens.front().type == TokenType::Identifier && tokens.front().value == "void") tokens.pop_front();
 
-    if (tokens.empty() || tokens.front().type != TokenType::CloseParenthesis) return nullptr;
+    if (tokens.empty() || tokens.front().type != TokenType::CloseParenthesis) {
+        std::cerr << "Missing closing parenthesis" << std::endl;
+        return nullptr;
+    }
 
     tokens.pop_front();
-    if (tokens.empty() || tokens.front().type != TokenType::OpenBrace) return nullptr;
+    if (tokens.empty() || tokens.front().type != TokenType::OpenBrace) {
+        std::cerr << "Missing { for function" << std::endl;
+        return nullptr;
+    }
     tokens.pop_front();
 
-    ASTNode* stmt = parseStatement(tokens);
+    Node* stmt = parseStatement(tokens);
     if (stmt == nullptr) return nullptr;
 
-    if (tokens.empty() || tokens.front().type != TokenType::CloseBrace) return nullptr;
+    if (tokens.empty() || tokens.front().type != TokenType::CloseBrace) {
+        std::cerr << "Missing }" << std::endl;
+        return nullptr;
+    }
     tokens.pop_front(); // Consume the close brace
 
-    return new Function{token_id.value, dynamic_cast<Statement*>(stmt)};
+    return new Function{dynamic_cast<Statement*>(stmt),token_id.value};
 
 }
 
-ASTNode* parseProgram(std::list<Token> &tokens) {
+Node* parseProgram(std::list<Token> &tokens) {
     return new Program{dynamic_cast<Function*>(parseFunction(tokens))};
 }
 
-ASTNode* parser(std::list<Token> &tokens) {
+Node* parser(std::list<Token> &tokens) {
     return parseProgram(tokens);
 }

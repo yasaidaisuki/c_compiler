@@ -9,6 +9,6 @@ int main(void) {
    // for (auto t : tokens) {
    //    cout << t.value << endl;
    // }
-   ASTNode* tree = parser(tokens);
-   tree->print();
+   Node* tree = parser(tokens);
+    
 }
