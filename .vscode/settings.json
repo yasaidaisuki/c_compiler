@@ -80,7 +80,9 @@
     "format": "cpp",
     "numbers": "cpp",
     "span": "cpp",
-    "text_encoding": "cpp"
+    "text_encoding": "cpp",
+    "errno.h": "c",
+    "lex.yy.c": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

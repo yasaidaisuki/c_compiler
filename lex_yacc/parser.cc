@@ -42,14 +42,15 @@
 
 
 // Unqualified %code blocks.
-#line 52 "parser.y"
+#line 71 "parser.y"
+
 
     #include "driver.h"
     #include "scanner.h"
 
     #define yylex scanner.lex
 
-#line 53 "parser.cc"
+#line 54 "parser.cc"
 
 
 #ifndef YY_
@@ -140,12 +141,12 @@
 #define YYERROR         goto yyerrorlab
 #define YYRECOVERING()  (!!yyerrstatus_)
 
-#line 12 "parser.y"
-namespace Mreow {
-#line 146 "parser.cc"
+#line 28 "parser.y"
+namespace Flub {
+#line 147 "parser.cc"
 
   /// Build a parser object.
-  Parser::Parser (Mreow::Scanner& scanner_yyarg, Mreow::Driver& driver_yyarg)
+  Parser::Parser (Flub::Scanner& scanner_yyarg, Flub::Driver& driver_yyarg)
 #if YYDEBUG
     : yydebug_ (false),
       yycdebug_ (&std::cerr),
@@ -176,34 +177,13 @@ namespace Mreow {
   {
     switch (this->kind ())
     {
-      case symbol_kind::S_INT_LITERAL: // INT_LITERAL
-        value.copy< int > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_IDENTIFIER: // IDENTIFIER
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_command: // command
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_function: // function
-      case symbol_kind::S_statement: // statement
-      case symbol_kind::S_expression: // expression
-        value.copy< std::unique_ptr<ASTNode> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_block: // block
-        value.copy< std::unique_ptr<Block> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_program: // program
-        value.copy< std::unique_ptr<TopLevel> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_parameter_list: // parameter_list
+      case symbol_kind::S_commands: // commands
         value.copy< std::vector<std::string> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_statement_list: // statement_list
-        value.copy< std::vector<std::unique_ptr<ASTNode>> > (YY_MOVE (that.value));
         break;
 
       default:
@@ -237,34 +217,13 @@ namespace Mreow {
     super_type::move (s);
     switch (this->kind ())
     {
-      case symbol_kind::S_INT_LITERAL: // INT_LITERAL
-        value.move< int > (YY_MOVE (s.value));
-        break;
-
-      case symbol_kind::S_IDENTIFIER: // IDENTIFIER
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_command: // command
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
-      case symbol_kind::S_function: // function
-      case symbol_kind::S_statement: // statement
-      case symbol_kind::S_expression: // expression
-        value.move< std::unique_ptr<ASTNode> > (YY_MOVE (s.value));
-        break;
-
-      case symbol_kind::S_block: // block
-        value.move< std::unique_ptr<Block> > (YY_MOVE (s.value));
-        break;
-
-      case symbol_kind::S_program: // program
-        value.move< std::unique_ptr<TopLevel> > (YY_MOVE (s.value));
-        break;
-
-      case symbol_kind::S_parameter_list: // parameter_list
+      case symbol_kind::S_commands: // commands
         value.move< std::vector<std::string> > (YY_MOVE (s.value));
-        break;
-
-      case symbol_kind::S_statement_list: // statement_list
-        value.move< std::vector<std::unique_ptr<ASTNode>> > (YY_MOVE (s.value));
         break;
 
       default:
@@ -368,34 +327,13 @@ namespace Mreow {
   {
     switch (that.kind ())
     {
-      case symbol_kind::S_INT_LITERAL: // INT_LITERAL
-        value.YY_MOVE_OR_COPY< int > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_IDENTIFIER: // IDENTIFIER
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_command: // command
         value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_function: // function
-      case symbol_kind::S_statement: // statement
-      case symbol_kind::S_expression: // expression
-        value.YY_MOVE_OR_COPY< std::unique_ptr<ASTNode> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_block: // block
-        value.YY_MOVE_OR_COPY< std::unique_ptr<Block> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_program: // program
-        value.YY_MOVE_OR_COPY< std::unique_ptr<TopLevel> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_parameter_list: // parameter_list
+      case symbol_kind::S_commands: // commands
         value.YY_MOVE_OR_COPY< std::vector<std::string> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_statement_list: // statement_list
-        value.YY_MOVE_OR_COPY< std::vector<std::unique_ptr<ASTNode>> > (YY_MOVE (that.value));
         break;
 
       default:
@@ -413,34 +351,13 @@ namespace Mreow {
   {
     switch (that.kind ())
     {
-      case symbol_kind::S_INT_LITERAL: // INT_LITERAL
-        value.move< int > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_IDENTIFIER: // IDENTIFIER
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_command: // command
         value.move< std::string > (YY_MOVE (that.value));
         break;
 
-      case symbol_kind::S_function: // function
-      case symbol_kind::S_statement: // statement
-      case symbol_kind::S_expression: // expression
-        value.move< std::unique_ptr<ASTNode> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_block: // block
-        value.move< std::unique_ptr<Block> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_program: // program
-        value.move< std::unique_ptr<TopLevel> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_parameter_list: // parameter_list
+      case symbol_kind::S_commands: // commands
         value.move< std::vector<std::string> > (YY_MOVE (that.value));
-        break;
-
-      case symbol_kind::S_statement_list: // statement_list
-        value.move< std::vector<std::unique_ptr<ASTNode>> > (YY_MOVE (that.value));
         break;
 
       default:
@@ -458,34 +375,13 @@ namespace Mreow {
     state = that.state;
     switch (that.kind ())
     {
-      case symbol_kind::S_INT_LITERAL: // INT_LITERAL
-        value.copy< int > (that.value);
-        break;
-
-      case symbol_kind::S_IDENTIFIER: // IDENTIFIER
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_command: // command
         value.copy< std::string > (that.value);
         break;
 
-      case symbol_kind::S_function: // function
-      case symbol_kind::S_statement: // statement
-      case symbol_kind::S_expression: // expression
-        value.copy< std::unique_ptr<ASTNode> > (that.value);
-        break;
-
-      case symbol_kind::S_block: // block
-        value.copy< std::unique_ptr<Block> > (that.value);
-        break;
-
-      case symbol_kind::S_program: // program
-        value.copy< std::unique_ptr<TopLevel> > (that.value);
-        break;
-
-      case symbol_kind::S_parameter_list: // parameter_list
+      case symbol_kind::S_commands: // commands
         value.copy< std::vector<std::string> > (that.value);
-        break;
-
-      case symbol_kind::S_statement_list: // statement_list
-        value.copy< std::vector<std::unique_ptr<ASTNode>> > (that.value);
         break;
 
       default:
@@ -502,34 +398,13 @@ namespace Mreow {
     state = that.state;
     switch (that.kind ())
     {
-      case symbol_kind::S_INT_LITERAL: // INT_LITERAL
-        value.move< int > (that.value);
-        break;
-
-      case symbol_kind::S_IDENTIFIER: // IDENTIFIER
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_command: // command
         value.move< std::string > (that.value);
         break;
 
-      case symbol_kind::S_function: // function
-      case symbol_kind::S_statement: // statement
-      case symbol_kind::S_expression: // expression
-        value.move< std::unique_ptr<ASTNode> > (that.value);
-        break;
-
-      case symbol_kind::S_block: // block
-        value.move< std::unique_ptr<Block> > (that.value);
-        break;
-
-      case symbol_kind::S_program: // program
-        value.move< std::unique_ptr<TopLevel> > (that.value);
-        break;
-
-      case symbol_kind::S_parameter_list: // parameter_list
+      case symbol_kind::S_commands: // commands
         value.move< std::vector<std::string> > (that.value);
-        break;
-
-      case symbol_kind::S_statement_list: // statement_list
-        value.move< std::vector<std::unique_ptr<ASTNode>> > (that.value);
         break;
 
       default:
@@ -800,34 +675,13 @@ namespace Mreow {
          when using variants.  */
       switch (yyr1_[yyn])
     {
-      case symbol_kind::S_INT_LITERAL: // INT_LITERAL
-        yylhs.value.emplace< int > ();
-        break;
-
-      case symbol_kind::S_IDENTIFIER: // IDENTIFIER
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_command: // command
         yylhs.value.emplace< std::string > ();
         break;
 
-      case symbol_kind::S_function: // function
-      case symbol_kind::S_statement: // statement
-      case symbol_kind::S_expression: // expression
-        yylhs.value.emplace< std::unique_ptr<ASTNode> > ();
-        break;
-
-      case symbol_kind::S_block: // block
-        yylhs.value.emplace< std::unique_ptr<Block> > ();
-        break;
-
-      case symbol_kind::S_program: // program
-        yylhs.value.emplace< std::unique_ptr<TopLevel> > ();
-        break;
-
-      case symbol_kind::S_parameter_list: // parameter_list
+      case symbol_kind::S_commands: // commands
         yylhs.value.emplace< std::vector<std::string> > ();
-        break;
-
-      case symbol_kind::S_statement_list: // statement_list
-        yylhs.value.emplace< std::vector<std::unique_ptr<ASTNode>> > ();
         break;
 
       default:
@@ -850,188 +704,43 @@ namespace Mreow {
         {
           switch (yyn)
             {
-  case 2: // program: function
-#line 85 "parser.y"
+  case 3: // root: commands "end of file"
+#line 92 "parser.y"
+        {
+            for (const std::string& str: yystack_[1].value.as < std::vector<std::string> > ())
             {
-      root = std::make_unique<TopLevel>();
-      root->addDecl(std::move(yystack_[0].value.as < std::unique_ptr<ASTNode> > ()));
-   }
-#line 860 "parser.cc"
+                std::cout << "command: " << str << "\n";
+            }
+        }
+#line 716 "parser.cc"
     break;
 
-  case 3: // function: KEYWORD_INT IDENTIFIER OPEN_PAR parameter_list CLOSE_PAR OPEN_BRACE block CLOSE_BRACE
-#line 93 "parser.y"
-    {
-        yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<Function>(
-            std::string(yystack_[6].value.as < std::string > ()), 
-            yystack_[4].value.as < std::vector<std::string> > (), 
-            std::move(yystack_[1].value.as < std::unique_ptr<Block> > ())
-        );
-    }
-#line 872 "parser.cc"
+  case 4: // commands: commands command
+#line 115 "parser.y"
+        {   yystack_[1].value.as < std::vector<std::string> > ().emplace_back(std::move(yystack_[0].value.as < std::string > ())); yylhs.value.as < std::vector<std::string> > () = std::move(yystack_[1].value.as < std::vector<std::string> > ()); }
+#line 722 "parser.cc"
     break;
 
-  case 4: // parameter_list: %empty
-#line 104 "parser.y"
-   {
-      yylhs.value.as < std::vector<std::string> > () = std::vector<std::string>();
-   }
-#line 880 "parser.cc"
-    break;
-
-  case 5: // parameter_list: parameter_list COMMA KEYWORD_INT IDENTIFIER
-#line 109 "parser.y"
-   {
-      yylhs.value.as < std::vector<std::string> > () = std::move(yystack_[3].value.as < std::vector<std::string> > ());
-      yylhs.value.as < std::vector<std::string> > ().emplace_back(yystack_[0].value.as < std::string > ());
-   }
-#line 889 "parser.cc"
-    break;
-
-  case 6: // block: statement_list
+  case 5: // commands: command
 #line 117 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<Block> > () = std::make_unique<Block>();
-      for (auto &stmt : yystack_[0].value.as < std::vector<std::unique_ptr<ASTNode>> > ()) {
-         yylhs.value.as < std::unique_ptr<Block> > ()->addStatements(std::move(stmt));
-      }
-   }
-#line 900 "parser.cc"
+        {   std::vector<std::string> vec {std::move(yystack_[0].value.as < std::string > ())}; yylhs.value.as < std::vector<std::string> > () = std::move(vec); }
+#line 728 "parser.cc"
     break;
 
-  case 7: // statement_list: statement
-#line 127 "parser.y"
-   {
-      yylhs.value.as < std::vector<std::unique_ptr<ASTNode>> > () = std::vector<std::unique_ptr<ASTNode>>();
-      yylhs.value.as < std::vector<std::unique_ptr<ASTNode>> > ().emplace_back(std::move(yystack_[0].value.as < std::unique_ptr<ASTNode> > ()));
-   }
-#line 909 "parser.cc"
+  case 6: // command: IGNORE STRING
+#line 123 "parser.y"
+    { yylhs.location = yystack_[0].location; yylhs.value.as < std::string > () = "-" + yystack_[0].value.as < std::string > (); }
+#line 734 "parser.cc"
     break;
 
-  case 8: // statement_list: statement_list statement
-#line 133 "parser.y"
-   {
-      yylhs.value.as < std::vector<std::unique_ptr<ASTNode>> > () = std::move(yystack_[1].value.as < std::vector<std::unique_ptr<ASTNode>> > ());
-      yylhs.value.as < std::vector<std::unique_ptr<ASTNode>> > ().emplace_back(std::move(yystack_[0].value.as < std::unique_ptr<ASTNode> > ()));
-   }
-#line 918 "parser.cc"
-    break;
-
-  case 9: // statement: RETURN expression SEMI_COL
-#line 141 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<ReturnStatement>(std::move(yystack_[1].value.as < std::unique_ptr<ASTNode> > ()));
-   }
-#line 926 "parser.cc"
-    break;
-
-  case 10: // statement: IF OPEN_PAR expression CLOSE_PAR OPEN_BRACE block CLOSE_BRACE
-#line 146 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<IfStatement>(std::move(yystack_[4].value.as < std::unique_ptr<ASTNode> > ()), std::move(yystack_[1].value.as < std::unique_ptr<Block> > ()));
-   }
-#line 934 "parser.cc"
-    break;
-
-  case 11: // statement: WHILE OPEN_PAR expression CLOSE_PAR OPEN_BRACE block CLOSE_BRACE
-#line 151 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<WhileStatement>(std::move(yystack_[4].value.as < std::unique_ptr<ASTNode> > ()), std::move(yystack_[1].value.as < std::unique_ptr<Block> > ()));
-   }
-#line 942 "parser.cc"
-    break;
-
-  case 12: // statement: KEYWORD_INT IDENTIFIER EQUAL expression SEMI_COL
-#line 156 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<Assignment>(std::string(yystack_[3].value.as < std::string > ()), std::move(yystack_[1].value.as < std::unique_ptr<ASTNode> > ()));
-   }
-#line 950 "parser.cc"
-    break;
-
-  case 13: // statement: expression SEMI_COL
-#line 161 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::move(yystack_[1].value.as < std::unique_ptr<ASTNode> > ());
-   }
-#line 958 "parser.cc"
-    break;
-
-  case 14: // expression: INT_LITERAL
-#line 168 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<Immediate>(yystack_[0].value.as < int > ());
-   }
-#line 966 "parser.cc"
-    break;
-
-  case 15: // expression: IDENTIFIER
-#line 173 "parser.y"
-   {
-      //$$ = std::make_unique<Variable>(std::string($1));
-      std::cout << "Hi";
-   }
-#line 975 "parser.cc"
-    break;
-
-  case 16: // expression: expression ADD expression
-#line 179 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<BinaryExp>(std::move(yystack_[2].value.as < std::unique_ptr<ASTNode> > ()),std::move(yystack_[0].value.as < std::unique_ptr<ASTNode> > ()),BinaryExpType::ADD);
-   }
-#line 983 "parser.cc"
-    break;
-
-  case 17: // expression: expression SUB expression
-#line 184 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<BinaryExp>(std::move(yystack_[2].value.as < std::unique_ptr<ASTNode> > ()),std::move(yystack_[0].value.as < std::unique_ptr<ASTNode> > ()),BinaryExpType::SUB);
-   }
-#line 991 "parser.cc"
-    break;
-
-  case 18: // expression: expression MULT expression
-#line 189 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<BinaryExp>(std::move(yystack_[2].value.as < std::unique_ptr<ASTNode> > ()),std::move(yystack_[0].value.as < std::unique_ptr<ASTNode> > ()),BinaryExpType::MULT);
-   }
-#line 999 "parser.cc"
-    break;
-
-  case 19: // expression: expression LESS expression
-#line 194 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<BinaryExp>(std::move(yystack_[2].value.as < std::unique_ptr<ASTNode> > ()),std::move(yystack_[0].value.as < std::unique_ptr<ASTNode> > ()),BinaryExpType::LESS_THAN);
-   }
-#line 1007 "parser.cc"
-    break;
-
-  case 20: // expression: expression LESS_OR_EQUAL expression
-#line 199 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<BinaryExp>(std::move(yystack_[2].value.as < std::unique_ptr<ASTNode> > ()),std::move(yystack_[0].value.as < std::unique_ptr<ASTNode> > ()),BinaryExpType::LESS_THAN_EQUAL);
-   }
-#line 1015 "parser.cc"
-    break;
-
-  case 21: // expression: SUB expression
-#line 204 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<UnaryExp>(std::move(yystack_[0].value.as < std::unique_ptr<ASTNode> > ()),UnaryExpType::NEGATION);
-   }
-#line 1023 "parser.cc"
-    break;
-
-  case 22: // expression: NOT expression
-#line 209 "parser.y"
-   {
-      yylhs.value.as < std::unique_ptr<ASTNode> > () = std::make_unique<UnaryExp>(std::move(yystack_[0].value.as < std::unique_ptr<ASTNode> > ()),UnaryExpType::LOGICAL_NEGATION);
-   }
-#line 1031 "parser.cc"
+  case 7: // command: INCLUDE STRING
+#line 125 "parser.y"
+    { yylhs.location = yystack_[0].location; yylhs.value.as < std::string > () = "+" + yystack_[0].value.as < std::string > (); }
+#line 740 "parser.cc"
     break;
 
 
-#line 1035 "parser.cc"
+#line 744 "parser.cc"
 
             default:
               break;
@@ -1215,12 +924,8 @@ namespace Mreow {
   {
     static const char *const yy_sname[] =
     {
-    "end of file", "error", "invalid token", "OPEN_BRACE", "CLOSE_BRACE",
-  "OPEN_PAR", "CLOSE_PAR", "IF", "WHILE", "LESS_OR_EQUAL", "KEYWORD_INT",
-  "RETURN", "SEMI_COL", "EQUAL", "COMMA", "ADD", "SUB", "MULT", "DIV",
-  "LESS", "NOT", "NEGATION", "INT_LITERAL", "IDENTIFIER", "$accept",
-  "program", "function", "parameter_list", "block", "statement_list",
-  "statement", "expression", YY_NULLPTR
+    "end of file", "error", "invalid token", "INCLUDE", "IGNORE", "STRING",
+  "$accept", "root", "commands", "command", YY_NULLPTR
     };
     return yy_sname[yysymbol];
   }
@@ -1489,107 +1194,75 @@ namespace Mreow {
   }
 
 
-  const signed char Parser::yypact_ninf_ = -48;
+  const signed char Parser::yypact_ninf_ = -5;
 
   const signed char Parser::yytable_ninf_ = -1;
 
   const signed char
   Parser::yypact_[] =
   {
-      19,     8,    34,   -48,     3,   -48,   -48,    24,    33,    36,
-      17,    25,    50,    52,    41,    51,    51,    51,   -48,   -48,
-      45,    17,   -48,    35,   -48,    51,    51,    62,    44,    -2,
-     -48,   -48,   -48,    51,   -48,    51,    51,    51,    51,    -3,
-      26,    51,   -48,   -48,    -2,    -2,     0,   -48,    55,    63,
-      53,    17,    17,   -48,    72,    73,   -48,   -48
+       0,    -5,    -4,     3,     7,     2,    -5,    -5,    -5,    -5,
+      -5,    -5
   };
 
   const signed char
   Parser::yydefact_[] =
   {
-       0,     0,     0,     2,     0,     1,     4,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    14,    15,
-       0,     6,     7,     0,     5,     0,     0,     0,     0,    21,
-      22,     3,     8,     0,    13,     0,     0,     0,     0,     0,
-       0,     0,     9,    20,    16,    17,    18,    19,     0,     0,
-       0,     0,     0,    12,     0,     0,    10,    11
+       0,     2,     0,     0,     0,     0,     5,     7,     6,     1,
+       3,     4
   };
 
   const signed char
   Parser::yypgoto_[] =
   {
-     -48,   -48,   -48,   -48,   -47,   -48,    57,   -15
+      -5,    -5,    -5,     4
   };
 
   const signed char
   Parser::yydefgoto_[] =
   {
-       0,     2,     3,     7,    20,    21,    22,    23
+       0,     4,     5,     6
   };
 
   const signed char
   Parser::yytable_[] =
   {
-      28,    29,    30,    48,    54,    55,    33,    33,     6,    33,
-      39,    40,    35,    36,    37,    37,    38,    38,    43,    38,
-      44,    45,    46,    47,    12,    13,    50,    14,    15,     1,
-       8,     4,    49,    16,     5,    33,    10,    17,     9,    18,
-      19,    35,    36,    37,    33,    38,    11,    34,    24,    31,
-      35,    36,    37,    33,    38,    25,    42,    26,    51,    35,
-      36,    37,    33,    38,    27,    53,    52,    16,    35,    36,
-      37,    17,    38,    18,    19,    41,    56,    57,    32
+       1,     7,    10,     2,     3,     2,     3,     9,     8,    11
   };
 
   const signed char
   Parser::yycheck_[] =
   {
-      15,    16,    17,     6,    51,    52,     9,     9,     5,     9,
-      25,    26,    15,    16,    17,    17,    19,    19,    33,    19,
-      35,    36,    37,    38,     7,     8,    41,    10,    11,    10,
-       6,    23,     6,    16,     0,     9,     3,    20,    14,    22,
-      23,    15,    16,    17,     9,    19,    10,    12,    23,     4,
-      15,    16,    17,     9,    19,     5,    12,     5,     3,    15,
-      16,    17,     9,    19,    23,    12,     3,    16,    15,    16,
-      17,    20,    19,    22,    23,    13,     4,     4,    21
+       0,     5,     0,     3,     4,     3,     4,     0,     5,     5
   };
 
   const signed char
   Parser::yystos_[] =
   {
-       0,    10,    25,    26,    23,     0,     5,    27,     6,    14,
-       3,    10,     7,     8,    10,    11,    16,    20,    22,    23,
-      28,    29,    30,    31,    23,     5,     5,    23,    31,    31,
-      31,     4,    30,     9,    12,    15,    16,    17,    19,    31,
-      31,    13,    12,    31,    31,    31,    31,    31,     6,     6,
-      31,     3,     3,    12,    28,    28,     4,     4
+       0,     0,     3,     4,     7,     8,     9,     5,     5,     0,
+       0,     9
   };
 
   const signed char
   Parser::yyr1_[] =
   {
-       0,    24,    25,    26,    27,    27,    28,    29,    29,    30,
-      30,    30,    30,    30,    31,    31,    31,    31,    31,    31,
-      31,    31,    31
+       0,     6,     7,     7,     8,     8,     9,     9
   };
 
   const signed char
   Parser::yyr2_[] =
   {
-       0,     2,     1,     8,     0,     4,     1,     1,     2,     3,
-       7,     7,     5,     2,     1,     1,     3,     3,     3,     3,
-       3,     2,     2
+       0,     2,     1,     2,     2,     1,     2,     2
   };
 
 
 
 
 #if YYDEBUG
-  const unsigned char
+  const signed char
   Parser::yyrline_[] =
   {
-       0,    85,    85,    92,   103,   108,   116,   126,   132,   140,
-     145,   150,   155,   160,   167,   172,   178,   183,   188,   193,
-     198,   203,   208
+       0,    90,    90,    91,   114,   116,   122,   124
   };
 
   void
@@ -1625,17 +1298,29 @@ namespace Mreow {
     return static_cast<symbol_kind_type> (t);
   }
 
-#line 12 "parser.y"
-} // Mreow
-#line 1631 "parser.cc"
+#line 28 "parser.y"
+} // Flub
+#line 1304 "parser.cc"
 
-#line 213 "parser.y"
-
+#line 128 "parser.y"
 
 #include <iostream>
 
 void
-Mreow::Parser::error(const location_type& l, const std::string& m)
+Flub::Parser::error(const location_type& l, const std::string& m)
 {
     std::cerr << "filename" << ":" << l << ": " << m << "\n";
+}
+
+
+int main()
+{
+    Flub::Driver drv{};
+    int n = drv.parse("example.txt");
+    if (n != 0)
+        std::cout << "fail\n";
+    else
+        std::cout << "ok\n";
+
+    return n;
 }
