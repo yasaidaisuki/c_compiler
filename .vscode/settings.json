@@ -82,7 +82,8 @@
     "span": "cpp",
     "text_encoding": "cpp",
     "errno.h": "c",
-    "lex.yy.c": "cpp"
+    "lex.yy.c": "cpp",
+    "*.inc": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
