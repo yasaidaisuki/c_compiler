@@ -2,6 +2,7 @@ Compiler for sub-set of C.
 - Notes:
   - Up to while-loops
   - some LLVM header problems
+  - Makefile doesn't really work
   
 Technologies:
 - C++
